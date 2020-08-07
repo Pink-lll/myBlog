@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lz.blog.dao.TypeDao">
+
+    <resultMap id="typeMap" type="com.lz.blog.po.Type">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <collection property="blogs" ofType="com.lz.blog.po.Blog">
+            <id property="id" column="bid"/>
+            <result property="title" column="title"/>
+            <result property="typeId" column="type_id"/>
+        </collection>
+    </resultMap>
+
+    <delete id="deleteType">
+        delete from t_type where id = #{id}
+    </delete>
+
+    <insert id="addType" parameterType="com.lz.blog.po.Type">
+        insert into blog.t_type values(#{id},#{name})
+    </insert>
+
+    <select id="getType" resultType="com.lz.blog.po.Type">
+        select id,name from t_type
+        where id = #{id}
+    </select>
+
+    <select id="getTypeList" parameterType="com.lz.blog.po.TypeExt" resultMap="typeMap">
+        select t_type.id,t_type.name from t_type
+    </select>
+
+    <select id="getTypeByName" resultType="com.lz.blog.po.Type">
+        select * from t_type where name = #{name}
+    </select>
+    <select id="getAllType" resultMap="typeMap">
+        select id,name from t_type
+    </select>
+    <select id="getIndexTopType" parameterType="Integer" resultType="com.lz.blog.po.Type">
+        select t.id,t.name
+        from t_type t,t_blog b
+        where t.id = b.type_id
+        group by t.id
+        order by count(0) desc
+        limit 0,#{size}
+    </select>
+
+    <update id="updateType" parameterType="com.lz.blog.po.Type">
+        update blog.t_type set name = #{name} where id = #{id};
+    </update>
+
+
+
+</mapper>

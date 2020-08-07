@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>搜索</title>
+</head>
+
+<body>
+
+  <!--导航-->
+  <nav th:replace="_fragments :: menu(1)" ></nav>
+
+  <!--中间内容-->
+  <div  class="m-container-small m-padded-tb-big animated fadeIn">
+    <div class="ui container">
+      <!--header-->
+      <div class="ui top attached segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <h3 class="ui teal header">搜索结果</h3>
+          </div>
+          <div class="right aligned column">
+            共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${pageInfo.total}">14</h2>个
+          </div>
+        </div>
+      </div>
+
+      <div class="ui top attached teal segment">
+        <div class="ui m-margin-lr-large vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="blog : ${pageInfo.list}">
+          <div class="ui middle aligned mobile reversed stackable grid">
+            <div class="eleven wide column">
+              <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">标题</a></h3>
+              <p class="m-txet" th:text="|${blog.description}..........|">凡事都要有一个必成的信念，要对自己bai有充分的信心，对任何事态的du发展抱乐观 的态度。自信是消除自卑，促进成功的最有效的方法，平时要注意及时抓住自信心的种 子，清除自卑的瓦砾，并为自信心的滋生和发展选一方肥沃的土壤。”因为自信心是...
+              </p>
+              <div class="ui stackable grid">
+                <div class="eleven wide column">
+                  <div class="ui mini horizontal link list">
+                    <div class="item">
+                      <img src="https://picsum.photos/200/140?image=1002" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                      <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">刘震</a></div>
+                    </div>
+                    <div class="item">
+                      <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-07-28</span>
+                    </div>
+                    <div class="item">
+                      <i class="eye icon"></i><span th:text="${blog.views}">1989</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="right aligned five wide column">
+                  <a href="#" th:href="@{/types/{id}(id=${blog.type.id})}" target="_blank" class="ui teal label m-padded-tiny m-text-thin" th:text="${blog.type.name}">type</a>
+                </div>
+              </div>
+            </div>
+            <div class="five wide column">
+              <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                <img src="http://www.005.tv/uploads/allimg/191016/67-191016135100437.png" th:src="${blog.firstPicture}" alt="" class="ui rounded image">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- bottom -->
+      <div class="ui bottom attached segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <div class="item"><a class="ui mini teal basic button" th:unless="${pageInfo.isIsFirstPage()}" th:href="@{/(pageNow=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a></div>
+          </div>
+          <div class="right aligned column">
+            <div class="item"><a class="ui mini teal basic button" th:unless="${pageInfo.isIsLastPage()}" th:href="@{/(pageNow=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="ui segment m-inline-block">
+        <p >当前第<span th:text="${pageInfo.pageNum}"></span>页，总<span th:text="${pageInfo.pages}"></span>页，共<span th:text="${pageInfo.total}"></span>条记录</p>
+      </div>
+
+
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <!--底部footer-->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+
+  </footer>
+
+  <!--导入的script-->
+  <th:block th:replace="_fragments :: script">
+
+  </th:block>
+
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+  </script>
+</body>
+</html>
